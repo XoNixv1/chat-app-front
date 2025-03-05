@@ -7,17 +7,13 @@ export async function middleware(request: NextRequest) {
   //public paths
   const isPublicPath = path === "/login" || path === "/register";
 
-  console.log("Path:", path);
-
   const token = request.cookies.get("token")?.value || "";
-
-  console.log("Token:", token);
 
   let isValidToken = false;
 
   if (token) {
     try {
-      const response = await fetch("http://localhost:3001/auth/varify", {
+      const response = await fetch("http://localhost:3001/api/auth/varify", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

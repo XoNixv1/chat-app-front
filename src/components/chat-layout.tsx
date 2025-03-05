@@ -1,19 +1,41 @@
-import { Suspense } from "react";
+"use client";
+
+import { Suspense, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Plus, Settings } from "lucide-react";
+import { Search, Settings } from "lucide-react";
 import ChatWindow from "./chat-window";
 import UserProfile from "./user-profile";
 import ContactsList from "./contacts-list";
+import AddUserForm from "./add-user-form";
+import { FullUserData } from "@/app/page";
+import ChatSkeleton from "./ui/chatSkeleton";
+
+interface ContactData {
+  contact_email: string;
+  contact_name: string;
+  contact_photo: string;
+}
+
+export interface OpenedChat {
+  opened: boolean;
+  contactData: ContactData;
+}
 
 export default function ChatLayout({
   initialData,
 }: {
-  initialData: {
-    currentUser: { id: string; name: string; avatar: string };
-    contacts: Array<{ id: string; name: string; avatar: string }>;
-  };
+  initialData: FullUserData | null;
 }) {
+  if (!initialData) {
+    return <ChatSkeleton></ChatSkeleton>;
+  }
+
+  const { contacts, currentUser } = initialData;
+  const [openedChat, setOpenedChat] = useState<OpenedChat>();
+
+  // TODO on chat click fetch data and use it for chat display
+
   return (
     <div className="flex flex-col h-screen bg-zinc-800 text-zinc-100">
       {/* Header - Static */}
@@ -43,34 +65,34 @@ export default function ChatLayout({
       <div className="flex flex-1 overflow-hidden">
         {/* Left sidebar - Contacts */}
         <div className="w-80 border-r border-zinc-700 overflow-y-auto bg-zinc-900">
-          <Button
-            variant="ghost"
-            className="w-full flex items-center gap-2 p-4 text-teal-500 hover:bg-zinc-700"
-          >
-            <Plus className="h-4 w-4" />
-            <span>Add new user</span>
-          </Button>
+          <AddUserForm />
 
           <Suspense fallback={<div className="p-4">Loading contacts...</div>}>
-            <ContactsList contacts={initialData.contacts} />
+            <ContactsList setOpenedChat={setOpenedChat} contacts={contacts} />
           </Suspense>
         </div>
 
         {/* Main chat area */}
-        <Suspense
-          fallback={
-            <div className="flex-1 flex items-center justify-center">
-              Loading chat...
-            </div>
-          }
-        >
-          <ChatWindow currentUser={initialData.currentUser} />
-        </Suspense>
+        {openedChat?.opened && (
+          <Suspense
+            fallback={
+              <div className="flex-1 flex items-center justify-center">
+                Loading chat...
+              </div>
+            }
+          >
+            <ChatWindow openedChat={openedChat} />
+          </Suspense>
+        )}
 
         {/* Right sidebar - User info */}
-        <Suspense fallback={<div className="w-80 p-4">Loading profile...</div>}>
-          <UserProfile />
-        </Suspense>
+        {openedChat?.opened && (
+          <Suspense
+            fallback={<div className="w-80 p-4">Loading profile...</div>}
+          >
+            <UserProfile openedChat={openedChat} />
+          </Suspense>
+        )}
       </div>
     </div>
   );

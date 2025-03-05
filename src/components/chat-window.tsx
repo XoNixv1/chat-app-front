@@ -5,13 +5,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Send, Smile } from "lucide-react";
-import { sendMessage } from "@/app/actions";
+import { sendMessage } from "@/app/actions/sendMessage";
+import { OpenedChat } from "./chat-layout";
 
-export default function ChatWindow({
-  currentUser,
-}: {
-  currentUser: { id: string; name: string; avatar: string };
-}) {
+export default function ChatWindow({ openedChat }: { openedChat: OpenedChat }) {
+  const { contact_name, contact_email, contact_photo } = openedChat.contactData;
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([
     {
@@ -46,7 +44,7 @@ export default function ChatWindow({
       text: message,
       sender: "Me",
       isMe: true,
-      avatar: currentUser.avatar,
+      avatar: contact_photo,
     };
     setMessages((prev) => [...prev, newMessage]);
     setMessage("");
@@ -69,7 +67,7 @@ export default function ChatWindow({
             <AvatarImage src="/placeholder.svg?height=32&width=32" alt="User" />
             <AvatarFallback>UN</AvatarFallback>
           </Avatar>
-          <span className="font-medium text-teal-500">User Name</span>
+          <span className="font-medium text-teal-500">{contact_name}</span>
         </div>
       </div>
 

@@ -9,6 +9,7 @@ type AuthResult = {
   success: boolean;
   error?: string;
   message?: string;
+  id?: number;
 };
 
 export async function login(
@@ -24,32 +25,38 @@ export async function login(
       };
     }
 
+    // login request
     const data = await request(
-      "http://localhost:3001/auth/login",
+      "http://localhost:3001/api/auth/login",
       "POST",
       "include",
       undefined,
-      { email, password }
+      {
+        email,
+        password,
+      }
     );
-    console.log(data);
+
     if (data.status === 400) {
       return {
         success: false,
         error: data.message,
       };
     }
-
+    console.log(data);
+    // seting cookie cuz it was not working from server
     (await cookies()).set({
       name: "token",
       value: data.token,
       path: "/",
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      httpOnly: false,
+      secure: true, //process.env.NODE_ENV === "production",
       maxAge: 3600,
-      sameSite: "lax",
+      sameSite: "none",
     });
     return {
       success: true,
+      id: data.id,
     };
   } catch (error) {
     console.error("Login error:", error);
@@ -74,10 +81,14 @@ export async function register(
       };
     }
     const data = await request(
-      "http://localhost:3001/auth/register",
+      "http://localhost:3001/api/auth/register",
       "POST",
       undefined,
-      { userName, email, password }
+      {
+        userName,
+        email,
+        password,
+      }
     );
 
     if (data.status === 409) {
