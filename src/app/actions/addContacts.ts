@@ -14,16 +14,8 @@ export async function addContact(email: string): Promise<ContactResult> {
         error: "Please enter a valid email address",
       };
     }
-
-    // Here you would:
-    // 1. Check if the user exists in your system
-    // 2. Check if they're already a contact
-    // 3. Add them to the user's contacts in your database
-
-    // Simulate a delay for the API call
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    // For demo purposes, let's simulate a successful addition
     return {
       success: true,
     };

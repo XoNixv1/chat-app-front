@@ -17,6 +17,7 @@ export default function ContactsList({
             setOpenedChat({
               opened: true,
               contactData: {
+                chat_id: contact.id,
                 contact_email: contact.contact_email,
                 contact_name: contact.contact_name,
                 contact_photo: contact.photo_url,

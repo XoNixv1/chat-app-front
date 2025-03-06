@@ -12,6 +12,7 @@ import { FullUserData } from "@/app/page";
 import ChatSkeleton from "./ui/chatSkeleton";
 
 interface ContactData {
+  chat_id: string;
   contact_email: string;
   contact_name: string;
   contact_photo: string;
@@ -31,14 +32,14 @@ export default function ChatLayout({
     return <ChatSkeleton></ChatSkeleton>;
   }
 
-  const { contacts, currentUser } = initialData;
+  const { contacts } = initialData;
   const [openedChat, setOpenedChat] = useState<OpenedChat>();
-
+  console.log(initialData);
   // TODO on chat click fetch data and use it for chat display
 
   return (
     <div className="flex flex-col h-screen bg-zinc-800 text-zinc-100">
-      {/* Header - Static */}
+      {/*header*/}
       <header className="flex items-center justify-between p-4 border-b border-zinc-700 bg-zinc-900">
         <div className="flex items-center gap-4">
           <div className="uppercase font-bold text-xl text-teal-500 px-4 py-1">
@@ -63,7 +64,7 @@ export default function ChatLayout({
       </header>
 
       <div className="flex flex-1 overflow-hidden">
-        {/* Left sidebar - Contacts */}
+        {/* left contacts */}
         <div className="w-80 border-r border-zinc-700 overflow-y-auto bg-zinc-900">
           <AddUserForm />
 
@@ -72,7 +73,7 @@ export default function ChatLayout({
           </Suspense>
         </div>
 
-        {/* Main chat area */}
+        {/* main chat */}
         {openedChat?.opened && (
           <Suspense
             fallback={
@@ -85,7 +86,7 @@ export default function ChatLayout({
           </Suspense>
         )}
 
-        {/* Right sidebar - User info */}
+        {/* right user info */}
         {openedChat?.opened && (
           <Suspense
             fallback={<div className="w-80 p-4">Loading profile...</div>}

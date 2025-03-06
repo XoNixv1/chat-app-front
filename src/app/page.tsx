@@ -26,7 +26,7 @@ export interface FullUserData {
 }
 
 export default function Home() {
-  const { userId, setUserId } = useAuth();
+  const { setUserId } = useAuth();
   const { request } = useHttp();
   const [initialData, setInitialdata] = useState<FullUserData | null>(null);
 
@@ -52,13 +52,8 @@ export default function Home() {
     }
   }
 
-  useEffect(() => {
-    console.log(initialData);
-  }, [initialData]);
-
   //getting user data
   useEffect(() => {
-    // console.log(document.cookie);
     fetchUserDataWithCookie();
   }, []);
 

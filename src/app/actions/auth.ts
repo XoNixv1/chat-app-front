@@ -44,14 +44,14 @@ export async function login(
       };
     }
     console.log(data);
-    // seting cookie cuz it was not working from server
+    // seting cookie here cuz it was not working from server
     (await cookies()).set({
       name: "token",
       value: data.token,
       path: "/",
       httpOnly: false,
       secure: true, //process.env.NODE_ENV === "production",
-      maxAge: 3600,
+      maxAge: 43200,
       sameSite: "none",
     });
     return {
@@ -83,6 +83,7 @@ export async function register(
     const data = await request(
       "http://localhost:3001/api/auth/register",
       "POST",
+      undefined,
       undefined,
       {
         userName,
