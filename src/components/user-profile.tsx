@@ -7,11 +7,25 @@ import { X, ChevronLeft } from "lucide-react";
 
 export default function UserProfile({
   openedChat,
+  curUserId,
 }: {
   openedChat: OpenedChat;
+  curUserId: string | null;
 }) {
-  const { contact_name, contact_email, contact_photo } = openedChat.contactData;
+  const {
+    user1_id,
+    user1_name,
+    user2_name,
+    user1_email,
+    user2_email,
+    user1_photo_url,
+    user2_photo_url,
+  } = openedChat.contactData;
   const [isOpen, setIsOpen] = useState(true);
+
+  if (!curUserId) {
+    return;
+  }
 
   if (!isOpen) {
     return (
@@ -35,7 +49,10 @@ export default function UserProfile({
           </button>
         </div>
         <div className="aspect-video rounded-md mb-4 flex items-center justify-center">
-          <img src={contact_photo} alt={contact_name} />
+          <img
+            src={curUserId === user1_id ? user2_photo_url : user1_photo_url}
+            alt={curUserId === user1_id ? user2_name : user1_name}
+          />
         </div>
 
         <div className="mb-4">
@@ -47,7 +64,9 @@ export default function UserProfile({
               />
               <AvatarFallback>UN</AvatarFallback>
             </Avatar>
-            <span className="text-teal-500">{contact_name}</span>
+            <span className="text-teal-500">
+              {curUserId === user1_id ? user2_name : user1_name}
+            </span>
           </div>
 
           <div className="flex items-center mb-3">
@@ -58,13 +77,11 @@ export default function UserProfile({
               />
               <AvatarFallback>EM</AvatarFallback>
             </Avatar>
-            <span className="text-teal-500">{contact_email}</span>
+            <span className="text-teal-500">
+              {curUserId === user1_id ? user2_email : user1_email}
+            </span>
           </div>
         </div>
-
-        {/* <div className="bg-zinc-700 rounded-md p-4 h-64 flex items-center justify-center"> */}
-        {/* <span className="text-5xl text-zinc-500">?</span> */}
-        {/* </div> */}
       </div>
     </div>
   );

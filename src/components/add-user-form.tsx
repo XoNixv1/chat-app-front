@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -13,8 +13,15 @@ import {
 } from "@/components/ui/dialog";
 import { Mail, Loader2 } from "lucide-react";
 import { addContact } from "@/app/actions/addContacts";
+import { useAuth } from "@/hooks/useAuth";
+import { FullUserData, UserContacts } from "@/app/page";
 
-export default function AddUserForm() {
+export default function AddUserForm({
+  setInitialdata,
+}: {
+  setInitialdata: React.Dispatch<SetStateAction<FullUserData | null>>;
+}) {
+  const { userId } = useAuth();
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
@@ -27,11 +34,24 @@ export default function AddUserForm() {
     setLoading(true);
 
     try {
-      const result = await addContact(email);
+      const result = await addContact(userId, email);
+
       if (result.success) {
         setSuccess(true);
         setEmail("");
-        // Close the dialog after 1.5 seconds
+
+        const newUser = result as unknown as UserContacts;
+
+        setInitialdata((prev) => {
+          if (!prev) return null;
+
+          return {
+            ...prev,
+            contacts: [...(prev.contacts || []), newUser],
+            currentUser: prev.currentUser,
+          };
+        });
+        // close after 1.5 seconds
         setTimeout(() => {
           setOpen(false);
           setSuccess(false);

@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import { SetStateAction, Suspense, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, Settings } from "lucide-react";
@@ -8,34 +8,30 @@ import ChatWindow from "./chat-window";
 import UserProfile from "./user-profile";
 import ContactsList from "./contacts-list";
 import AddUserForm from "./add-user-form";
-import { FullUserData } from "@/app/page";
+import { FullUserData, UserContacts } from "@/app/page";
 import ChatSkeleton from "./ui/chatSkeleton";
-
-interface ContactData {
-  chat_id: string;
-  contact_email: string;
-  contact_name: string;
-  contact_photo: string;
-}
+import { useAuth } from "@/hooks/useAuth";
 
 export interface OpenedChat {
   opened: boolean;
-  contactData: ContactData;
+  contactData: UserContacts;
 }
 
 export default function ChatLayout({
   initialData,
+  setInitialdata,
 }: {
   initialData: FullUserData | null;
+  setInitialdata: React.Dispatch<SetStateAction<FullUserData | null>>;
 }) {
   if (!initialData) {
     return <ChatSkeleton></ChatSkeleton>;
   }
-
+  const { userId } = useAuth();
   const { contacts } = initialData;
   const [openedChat, setOpenedChat] = useState<OpenedChat>();
-  console.log(initialData);
-  // TODO on chat click fetch data and use it for chat display
+  const [hasMessages, setHasMessages] = useState(true);
+  const [page, setPage] = useState(1);
 
   return (
     <div className="flex flex-col h-screen bg-zinc-800 text-zinc-100">
@@ -66,10 +62,16 @@ export default function ChatLayout({
       <div className="flex flex-1 overflow-hidden">
         {/* left contacts */}
         <div className="w-80 border-r border-zinc-700 overflow-y-auto bg-zinc-900">
-          <AddUserForm />
+          <AddUserForm initialData={initialData} />
 
           <Suspense fallback={<div className="p-4">Loading contacts...</div>}>
-            <ContactsList setOpenedChat={setOpenedChat} contacts={contacts} />
+            <ContactsList
+              setHasMessages={setHasMessages}
+              setPage={setPage}
+              setOpenedChat={setOpenedChat}
+              contacts={contacts}
+              curUserId={userId}
+            />
           </Suspense>
         </div>
 
@@ -82,7 +84,13 @@ export default function ChatLayout({
               </div>
             }
           >
-            <ChatWindow openedChat={openedChat} />
+            <ChatWindow
+              hasMessages={hasMessages}
+              setHasMessages={setHasMessages}
+              page={page}
+              setPage={setPage}
+              openedChat={openedChat}
+            />
           </Suspense>
         )}
 
@@ -91,7 +99,7 @@ export default function ChatLayout({
           <Suspense
             fallback={<div className="w-80 p-4">Loading profile...</div>}
           >
-            <UserProfile openedChat={openedChat} />
+            <UserProfile curUserId={userId} openedChat={openedChat} />
           </Suspense>
         )}
       </div>

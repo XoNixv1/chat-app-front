@@ -12,12 +12,15 @@ export interface User {
 
 export interface UserContacts {
   id: string;
-  contact_name: string;
-  contact_email: string;
+  user1_name: string;
+  user2_name: string;
+  user1_email: string;
+  user2_email: string;
   user1_id: string;
   user2_id: string;
   created_at: Date;
-  photo_url: string;
+  user1_photo_url: string;
+  user2_photo_url: string;
 }
 
 export interface FullUserData {
@@ -57,5 +60,7 @@ export default function Home() {
     fetchUserDataWithCookie();
   }, []);
 
-  return <ChatLayout initialData={initialData} />;
+  return (
+    <ChatLayout setInitialdata={setInitialdata} initialData={initialData} />
+  );
 }
