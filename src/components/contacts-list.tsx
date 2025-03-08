@@ -1,5 +1,5 @@
 import { FullUserData } from "@/app/page";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { OpenedChat } from "./chat-layout";
 
 export default function ContactsList({
@@ -42,14 +42,13 @@ export default function ContactsList({
               });
             }}
             key={id}
-            className="flex items-center pr-20 pl-5 justify-around p-4 hover:bg-zinc-700 rounded-md cursor-pointer mb-1"
+            className="flex items-center pr-20 pl-5 ml-6 p-4 hover:bg-zinc-700 rounded-md cursor-pointer mb-1"
           >
-            <Avatar className="h-10 w-10 mr-3">
+            <Avatar className="h-10 w-10 mr-5">
               <AvatarImage
                 src={curUserId === user1_id ? user2_photo_url : user1_photo_url}
                 alt={curUserId === user1_id ? user2_name : user1_name}
               />
-              <AvatarFallback>U{id}</AvatarFallback>
             </Avatar>
             <span className="text-zinc-200">
               {curUserId === user1_id ? user2_name : user1_name}

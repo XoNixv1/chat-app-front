@@ -1,9 +1,10 @@
 "use client";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { OpenedChat } from "./chat-layout";
 import { useState } from "react";
 import { X, ChevronLeft } from "lucide-react";
+import { AtSign, User } from "lucide-react";
 
 export default function UserProfile({
   openedChat,
@@ -48,7 +49,7 @@ export default function UserProfile({
             <X className="h-8 w-8 p-1" />
           </button>
         </div>
-        <div className="aspect-video rounded-md mb-4 flex items-center justify-center">
+        <div className="aspect-video rounded-md mb-4 flex items-center justify-center max-w-8/12 m-auto">
           <img
             src={curUserId === user1_id ? user2_photo_url : user1_photo_url}
             alt={curUserId === user1_id ? user2_name : user1_name}
@@ -58,11 +59,8 @@ export default function UserProfile({
         <div className="mb-4">
           <div className="flex items-center mb-3">
             <Avatar className="h-10 w-10 mr-3">
-              <AvatarImage
-                src="/placeholder.svg?height=40&width=40"
-                alt="User"
-              />
-              <AvatarFallback>UN</AvatarFallback>
+              <AvatarImage alt="User" />
+              <User className="m-auto" />
             </Avatar>
             <span className="text-teal-500">
               {curUserId === user1_id ? user2_name : user1_name}
@@ -71,11 +69,8 @@ export default function UserProfile({
 
           <div className="flex items-center mb-3">
             <Avatar className="h-10 w-10 mr-3">
-              <AvatarImage
-                src="/placeholder.svg?height=40&width=40"
-                alt="Email"
-              />
-              <AvatarFallback>EM</AvatarFallback>
+              <AvatarImage alt="Email" />
+              <AtSign className="m-auto" />
             </Avatar>
             <span className="text-teal-500">
               {curUserId === user1_id ? user2_email : user1_email}

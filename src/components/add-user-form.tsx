@@ -36,12 +36,12 @@ export default function AddUserForm({
     try {
       const result = await addContact(userId, email);
 
-      if (result.success) {
+      if (result && result.success) {
         setSuccess(true);
         setEmail("");
 
-        const newUser = result as unknown as UserContacts;
-
+        const newUser = result.data as unknown as UserContacts;
+        console.log(newUser);
         setInitialdata((prev) => {
           if (!prev) return null;
 
@@ -51,16 +51,19 @@ export default function AddUserForm({
             currentUser: prev.currentUser,
           };
         });
-        // close after 1.5 seconds
+        // close after 2 seconds
         setTimeout(() => {
           setOpen(false);
           setSuccess(false);
-        }, 1500);
+        }, 2000);
       } else {
-        setError(result.error || "Failed to add user");
+        if (result) setError(result.error || "Failed to add user");
+        setTimeout(() => {
+          setError("");
+        }, 2500);
       }
     } catch (err) {
-      setError("An error occurred. Please try again.");
+      setError(`An error occurred. Please try again.${err}`);
     } finally {
       setLoading(false);
     }

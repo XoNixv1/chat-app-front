@@ -62,7 +62,7 @@ export default function ChatLayout({
       <div className="flex flex-1 overflow-hidden">
         {/* left contacts */}
         <div className="w-80 border-r border-zinc-700 overflow-y-auto bg-zinc-900">
-          <AddUserForm initialData={initialData} />
+          <AddUserForm setInitialdata={setInitialdata} />
 
           <Suspense fallback={<div className="p-4">Loading contacts...</div>}>
             <ContactsList
