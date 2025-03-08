@@ -39,7 +39,7 @@ export default function ChatLayout({
       <header className="flex items-center justify-between p-4 border-b border-zinc-700 bg-zinc-900">
         <div className="flex items-center gap-4">
           <div className="uppercase font-bold text-xl text-teal-500 px-4 py-1">
-            LOGO
+            XCHAP
           </div>
           <Button
             variant="ghost"
