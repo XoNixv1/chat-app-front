@@ -25,12 +25,16 @@ export default function ChatWindow({
   openedChat,
   hasMessages,
   setHasMessages,
+  isMobile,
+  openedForMobile,
 }: {
   page: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
   openedChat: OpenedChat;
   hasMessages: boolean;
   setHasMessages: React.Dispatch<boolean>;
+  isMobile: boolean;
+  openedForMobile: boolean;
 }) {
   const { userId } = useAuth();
   const {
@@ -108,6 +112,10 @@ export default function ChatWindow({
       setMessages((prevMessages) => [...prevMessages, newMessage]);
     });
 
+    socket.on("newGptMessage", (newMessage: Message) => {
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
+    });
+
     setSocket(socket);
     // clearing socket
     return () => {
@@ -153,18 +161,34 @@ export default function ChatWindow({
     }
   }, [message]);
 
-  const sendMessage = () => {
-    if (message.trim() && socket) {
-      socket.emit("sendMessage", {
+  //sending to user or gpt
+  const socketSendType = (sendType: string) => {
+    if (socket) {
+      socket.emit(sendType, {
         id,
         messageText: message,
         senderId: userId,
       });
-      setMessages((prev) => [...prev]);
+      // setMessages((prev) => [...prev]);
       setMessage("");
       setTimeout(() => {
         scrollToBottom();
       }, 50);
+    }
+  };
+
+  const sendMessage = () => {
+    if (
+      (message.trim() &&
+        socket &&
+        openedChat.contactData.user2_email === "@chatgpt.com") ||
+      (message.trim() &&
+        socket &&
+        openedChat.contactData.user1_email === "@chatgpt.com")
+    ) {
+      socketSendType("sendGptMessage");
+    } else if (message.trim() && socket) {
+      socketSendType("sendMessage");
     }
   };
 
@@ -212,10 +236,14 @@ export default function ChatWindow({
   };
 
   return (
-    <div className="flex-1 flex flex-col overflow-hidden bg-zinc-800">
+    <div
+      className={`${
+        isMobile && !openedForMobile ? "hidden" : "flex flex-1"
+      } flex-col overflow-hidden bg-zinc-800`}
+    >
       {/* chat header */}
       <div className="flex items-center justify-between px-6 py-2 border-b border-zinc-700 bg-zinc-900">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 ml-5">
           <Avatar className="h-10 w-10">
             <AvatarImage
               src={userId === user1_id ? user2_photo_url : user1_photo_url}
@@ -230,7 +258,7 @@ export default function ChatWindow({
 
       {/* messages block */}
       <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4">
-        <div className="flex-1  w-6/12 mx-auto">
+        <div className={`${isMobile ? "w-full" : "w-6/12"} flex-1 mx-auto`}>
           {messages.map((msg) => (
             <div
               key={msg.id}
@@ -276,9 +304,12 @@ export default function ChatWindow({
       </div>
 
       {/* message input */}
-      <div className="p-4 border-t border-zinc-700 bg-zinc-900 flex justify-center">
+      <div className="p-4 border-t border-zinc-700 bg-zinc-900 flex justify-center relative">
         {isPickerVisable && (
-          <div ref={pickerRef} className=" absolute bottom-14">
+          <div
+            ref={pickerRef}
+            className=" absolute bottom-20 left-4/12 -translate-x-1/2"
+          >
             <Picker theme="dark" onEmojiSelect={addEmoji} />
           </div>
         )}

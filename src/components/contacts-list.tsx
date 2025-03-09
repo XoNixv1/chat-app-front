@@ -8,12 +8,16 @@ export default function ContactsList({
   curUserId,
   setPage,
   setHasMessages,
+  setOpenedForMobile,
+  isMobile,
 }: {
   contacts: FullUserData["contacts"];
-  setOpenedChat: React.Dispatch<OpenedChat>;
+  setOpenedChat: React.Dispatch<OpenedChat | undefined>;
   curUserId: string | null;
   setPage: React.Dispatch<number>;
   setHasMessages: React.Dispatch<boolean>;
+  setOpenedForMobile: React.Dispatch<boolean>;
+  isMobile: boolean;
 }) {
   if (!curUserId) {
     return;
@@ -34,6 +38,7 @@ export default function ContactsList({
             onClick={() => {
               setPage(1);
               setHasMessages(true);
+              if (isMobile) setOpenedForMobile(true);
               setOpenedChat({
                 opened: true,
                 contactData: {

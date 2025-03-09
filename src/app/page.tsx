@@ -61,6 +61,8 @@ export default function Home() {
   }, []);
 
   return (
-    <ChatLayout setInitialdata={setInitialdata} initialData={initialData} />
+    <div>
+      <ChatLayout setInitialdata={setInitialdata} initialData={initialData} />
+    </div>
   );
 }
