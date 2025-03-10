@@ -46,11 +46,11 @@ export async function login(
     console.log(data);
     // seting cookie here cuz it was not working from server
     (await cookies()).set({
-      name: "token",
+      name: "chat_token",
       value: data.token,
       path: "/",
       httpOnly: false,
-      secure: true, //process.env.NODE_ENV === "production",
+      secure: true,
       maxAge: 43200,
       sameSite: "none",
     });

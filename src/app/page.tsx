@@ -40,7 +40,6 @@ export default function Home() {
         "GET",
         "include"
       );
-
       if (res) {
         setUserId(res.userData.id);
         setInitialdata({

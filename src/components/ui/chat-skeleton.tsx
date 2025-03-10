@@ -19,13 +19,13 @@ export default function ChatSkeleton() {
           </Button>
         </div>
 
-        <div className="relative">
+        {/* <div className="relative">
           <Search className="absolute left-2 top-2.5 h-4 w-4 text-zinc-400" />
           <textarea
             placeholder="Type a message"
             className="h-10 resize-none bg-zinc-700 border border-zinc-600 text-zinc-200 w-full rounded-md px-3 py-1 text-base outline-none focus-visible:ring-teal-500 focus-visible:border-ring "
           />
-        </div>
+        </div> */}
       </header>
 
       <div className="flex flex-1 overflow-hidden">

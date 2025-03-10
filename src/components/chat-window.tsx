@@ -266,16 +266,25 @@ export default function ChatWindow({
                 userId === msg.sender_id ? "justify-end" : "justify-start"
               }`}
             >
-              {!(userId === msg.sender_id) && (
-                <Avatar className="h-10 w-10 mr-2 mt-1">
-                  <AvatarImage
-                    src={
-                      userId === user1_id ? user2_photo_url : user1_photo_url
-                    }
-                    alt={userId === user1_id ? user2_name : user1_name}
-                  />
-                </Avatar>
-              )}
+              <Avatar className="h-10 w-10 mr-2 mt-1">
+                <AvatarImage
+                  src={
+                    userId === msg.sender_id
+                      ? userId === user1_id
+                        ? user1_photo_url
+                        : user2_photo_url
+                      : user2_photo_url
+                  }
+                  alt={
+                    userId === msg.sender_id
+                      ? userId === user1_id
+                        ? user1_name
+                        : user2_name
+                      : user2_name
+                  }
+                />
+              </Avatar>
+
               <div
                 className={`max-w-md p-3 rounded-lg ${
                   userId === msg.sender_id
@@ -288,16 +297,6 @@ export default function ChatWindow({
                 </div>
                 {msg.message_text}
               </div>
-              {userId === msg.sender_id && (
-                <Avatar className="h-10 w-10 ml-2 mt-1">
-                  <AvatarImage
-                    src={
-                      userId === user1_id ? user2_photo_url : user1_photo_url
-                    }
-                    alt={userId === user1_id ? user2_name : user1_name}
-                  />
-                </Avatar>
-              )}
             </div>
           ))}
         </div>

@@ -1,16 +1,16 @@
 "use client";
 
-import { SetStateAction, Suspense, useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { ChevronLeft, Search, Settings, User } from "lucide-react";
 import ChatWindow from "./chat-window";
 import UserProfile from "./user-profile";
 import ContactsList from "./contacts-list";
 import AddUserForm from "./add-user-form";
 import { FullUserData, UserContacts } from "@/app/page";
-import ChatSkeleton from "./ui/chatSkeleton";
+import ChatSkeleton from "./ui/chat-skeleton";
 import { useAuth } from "@/hooks/useAuth";
+import SettingModal from "./setting-modal";
 
 export interface OpenedChat {
   opened: boolean;
@@ -34,6 +34,7 @@ export default function ChatLayout({
   const [page, setPage] = useState(1);
   const [isMobile, setIsMobile] = useState(false);
   const [openedForMobile, setOpenedForMobile] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
 
   //scaling for mobile
   useEffect(() => {
@@ -49,7 +50,16 @@ export default function ChatLayout({
   }, []);
 
   return (
+    // settings modal
     <div className="flex flex-col h-screen bg-zinc-800 text-zinc-100 ">
+      {showSettings && (
+        <SettingModal
+          initialData={initialData}
+          setShowSettings={setShowSettings}
+          setInitialdata={setInitialdata}
+        />
+      )}
+
       {/*header*/}
       <header className="flex items-center justify-between p-4 border-b border-zinc-700 bg-zinc-900">
         <div className="flex items-center gap-4">
@@ -59,19 +69,20 @@ export default function ChatLayout({
           <Button
             variant="ghost"
             size="icon"
+            onClick={() => setShowSettings(true)}
             className="rounded-full bg-zinc-700 hover:bg-zinc-600 text-teal-500"
           >
             <Settings className="h-5 w-5" />
           </Button>
         </div>
 
-        <div className="relative">
+        {/* <div className="relative">
           <Search className="absolute left-2 top-2.5 h-4 w-4 text-zinc-400" />
           <Input
             placeholder="search message"
             className="pl-8 bg-zinc-700 border-zinc-600 text-zinc-200 max-w-64 focus-visible:ring-teal-500"
           />
-        </div>
+        </div> */}
       </header>
 
       <div className="flex flex-1 overflow-hidden">

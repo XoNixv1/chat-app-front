@@ -7,7 +7,7 @@ export async function middleware(request: NextRequest) {
   //public paths
   const isPublicPath = path === "/login" || path === "/register";
 
-  const token = request.cookies.get("token")?.value || "";
+  const token = request.cookies.get("chat_token")?.value || "";
 
   let isValidToken = false;
 
