@@ -51,11 +51,11 @@ export default function AddUserForm({
             currentUser: prev.currentUser,
           };
         });
-        // close after 2 seconds
+        // close after 1 seconds
         setTimeout(() => {
           setOpen(false);
           setSuccess(false);
-        }, 2000);
+        }, 1000);
       } else {
         if (result) setError(result.error || "Failed to add user");
         setTimeout(() => {

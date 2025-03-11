@@ -29,7 +29,7 @@ export default function ChatLayout({
   }
   const { userId } = useAuth();
   const { contacts } = initialData;
-  const [openedChat, setOpenedChat] = useState<OpenedChat>();
+  const [openedChat, setOpenedChat] = useState<OpenedChat | null>();
   const [hasMessages, setHasMessages] = useState(true);
   const [page, setPage] = useState(1);
   const [isMobile, setIsMobile] = useState(false);
@@ -38,12 +38,14 @@ export default function ChatLayout({
 
   //scaling for mobile
   useEffect(() => {
+    if (typeof window === "undefined") return;
+
     const checkIfMobile = () => {
       setIsMobile(window.innerWidth < 768);
       setOpenedForMobile(window.innerWidth < 768);
     };
 
-    checkIfMobile(); // Устанавливаем начальное значение
+    checkIfMobile();
     window.addEventListener("resize", checkIfMobile);
 
     return () => window.removeEventListener("resize", checkIfMobile);
@@ -147,8 +149,14 @@ export default function ChatLayout({
           </div>
         )}
         {/* right user info */}
-        {openedChat?.opened && !isMobile && (
-          <UserProfile curUserId={userId} openedChat={openedChat} />
+        {openedChat?.opened && (
+          <UserProfile
+            isMobile={isMobile}
+            curUserId={userId}
+            openedChat={openedChat}
+            setOpenedChat={setOpenedChat}
+            setInitialdata={setInitialdata}
+          />
         )}
       </div>
     </div>

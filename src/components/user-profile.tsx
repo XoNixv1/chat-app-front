@@ -2,18 +2,28 @@
 
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { OpenedChat } from "./chat-layout";
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 import { X, ChevronLeft } from "lucide-react";
 import { AtSign, User } from "lucide-react";
+import { Button } from "./ui/button";
+import { deleteContact } from "@/app/actions/delete-contact";
+import { FullUserData } from "@/app/page";
 
 export default function UserProfile({
   openedChat,
   curUserId,
+  setOpenedChat,
+  setInitialdata,
+  isMobile,
 }: {
   openedChat: OpenedChat;
+  setOpenedChat: React.Dispatch<OpenedChat | null>;
+  setInitialdata: React.Dispatch<SetStateAction<FullUserData | null>>;
   curUserId: string | null;
+  isMobile: boolean;
 }) {
   const {
+    id,
     user1_id,
     user1_name,
     user2_name,
@@ -23,6 +33,31 @@ export default function UserProfile({
     user2_photo_url,
   } = openedChat.contactData;
   const [isOpen, setIsOpen] = useState(true);
+
+  if (isMobile) {
+    return (
+      <Button
+        variant="destructive"
+        className="absolute w-25 bg-red-600 hover:bg-red-700 text-white top-19.5 right-5"
+        onClick={() => {
+          deleteContact(id);
+          setOpenedChat(null);
+          setInitialdata((prev) => {
+            if (prev === null) {
+              return prev;
+            } else {
+              const newContacts = prev.contacts.filter(
+                (contact) => contact.id !== id
+              );
+              return { ...prev, contacts: newContacts };
+            }
+          });
+        }}
+      >
+        Unfriend
+      </Button>
+    );
+  }
 
   if (!curUserId) {
     return;
@@ -56,7 +91,7 @@ export default function UserProfile({
           />
         </div>
 
-        <div className="mb-4">
+        <div className="mb-4 flex flex-col">
           <div className="flex items-center mb-3">
             <Avatar className="h-10 w-10 mr-3">
               <AvatarImage alt="User" />
@@ -76,11 +111,30 @@ export default function UserProfile({
               {curUserId === user1_id ? user2_email : user1_email}
             </span>
           </div>
+          {user2_email !== "@chatgpt.com" && user1_email !== "@chatgpt.com" && (
+            <Button
+              variant="destructive"
+              className="w-[50%] bg-red-600 hover:bg-red-700 text-white self-center "
+              onClick={() => {
+                deleteContact(id);
+                setOpenedChat(null);
+                setInitialdata((prev) => {
+                  if (prev === null) {
+                    return prev;
+                  } else {
+                    const newContacts = prev.contacts.filter(
+                      (contact) => contact.id !== id
+                    );
+                    return { ...prev, contacts: newContacts };
+                  }
+                });
+              }}
+            >
+              Unfriend
+            </Button>
+          )}
         </div>
       </div>
     </div>
   );
 }
-
-("af36ac5e-f7b1-4b7a-90b4-36116318fe5d");
-("f056a49e-b879-4a43-9383-7bd9c4407653");

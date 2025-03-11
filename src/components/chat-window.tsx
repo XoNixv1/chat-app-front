@@ -56,9 +56,7 @@ export default function ChatWindow({
 
   async function getMessages() {
     if (loading || !hasMessages) return;
-
     setLoading(true);
-
     //remember the scroll
     const chatElement = chatContainerRef.current;
     const prevScrollHeight = chatElement ? chatElement.scrollHeight : 0;
