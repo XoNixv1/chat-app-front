@@ -3,7 +3,7 @@ import axios from "axios";
 export async function deleteContact(id: string) {
   try {
     const response = await axios.post(
-      "http://localhost:3001/api/user/deleteContact",
+      "https://chat-app-server-production-1070.up.railway.app/api/user/deleteContact",
       {
         id,
       }

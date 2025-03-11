@@ -13,13 +13,16 @@ export async function middleware(request: NextRequest) {
 
   if (token) {
     try {
-      const response = await fetch("http://localhost:3001/api/auth/varify", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        "https://chat-app-server-production-1070.up.railway.app/api/auth/varify",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       console.log("Validation response status:", response.status);
 

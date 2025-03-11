@@ -63,7 +63,7 @@ export default function ChatWindow({
 
     try {
       const response = await axios.get(
-        "http://localhost:3001/api/chat/messages",
+        "https://chat-app-server-production-1070.up.railway.app/api/chat/messages",
         {
           params: {
             chat_id: id,
@@ -99,9 +99,12 @@ export default function ChatWindow({
     getMessages();
 
     // socket connection
-    const socket = io("http://localhost:3001", {
-      transports: ["websocket", "polling"],
-    });
+    const socket = io(
+      "https://chat-app-server-production-1070.up.railway.app/",
+      {
+        transports: ["websocket", "polling"],
+      }
+    );
 
     socket.emit("joinRoom", id);
 

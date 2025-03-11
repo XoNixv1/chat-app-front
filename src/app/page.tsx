@@ -36,7 +36,7 @@ export default function Home() {
   async function fetchUserDataWithCookie() {
     try {
       const res = await request(
-        `http://localhost:3001/api/user/userData/`,
+        `https://chat-app-server-production-1070.up.railway.app/api/user/userData/`,
         "GET",
         "include"
       );
