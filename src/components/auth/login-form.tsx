@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { login } from "@/app/actions/auth";
 import { Mail, Lock, Loader2 } from "lucide-react";
-import { useAuth } from "@/hooks/useAuth";
 
 export default function LoginForm() {
   const router = useRouter();
