@@ -132,7 +132,7 @@ export default function ChatWindow({
       document.removeEventListener("mouseup", closePicker);
       chatElement?.removeEventListener("scroll", onScroll);
     };
-  }, []);
+  });
 
   //effect on message
   useEffect(() => {

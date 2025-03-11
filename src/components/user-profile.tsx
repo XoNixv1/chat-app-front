@@ -89,6 +89,8 @@ export default function UserProfile({
           <Image
             src={curUserId === user1_id ? user2_photo_url : user1_photo_url}
             alt={curUserId === user1_id ? user2_name : user1_name}
+            width={500}
+            height={500}
           />
         </div>
 

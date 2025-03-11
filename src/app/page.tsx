@@ -57,7 +57,7 @@ export default function Home() {
   //getting user data
   useEffect(() => {
     fetchUserDataWithCookie();
-  }, []);
+  });
 
   return (
     <div>

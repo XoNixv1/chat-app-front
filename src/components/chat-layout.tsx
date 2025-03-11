@@ -46,7 +46,7 @@ export default function ChatLayout({
     window.addEventListener("resize", checkIfMobile);
 
     return () => window.removeEventListener("resize", checkIfMobile);
-  }, []);
+  });
 
   if (!initialData) {
     return <ChatSkeleton></ChatSkeleton>;
