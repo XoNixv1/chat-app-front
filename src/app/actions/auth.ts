@@ -3,8 +3,6 @@
 import useHttp from "@/hooks/useHttp";
 import { cookies } from "next/headers";
 
-const { request } = useHttp();
-
 type AuthResult = {
   success: boolean;
   error?: string;
@@ -16,6 +14,7 @@ export async function login(
   email: string,
   password: string
 ): Promise<AuthResult> {
+  const { request } = useHttp();
   try {
     //TODO validate input
     if (!email || !password) {
@@ -72,6 +71,7 @@ export async function register(
   email: string,
   password: string
 ): Promise<AuthResult> {
+  const { request } = useHttp();
   try {
     //TODO validate input
     if (!userName || !email || !password) {
