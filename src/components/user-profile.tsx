@@ -8,6 +8,7 @@ import { AtSign, User } from "lucide-react";
 import { Button } from "./ui/button";
 import { deleteContact } from "@/app/actions/delete-contact";
 import { FullUserData } from "@/app/page";
+import Image from "next/image";
 
 export default function UserProfile({
   openedChat,
@@ -85,7 +86,7 @@ export default function UserProfile({
           </button>
         </div>
         <div className="aspect-video rounded-md mb-4 flex items-center justify-center max-w-8/12 m-auto">
-          <img
+          <Image
             src={curUserId === user1_id ? user2_photo_url : user1_photo_url}
             alt={curUserId === user1_id ? user2_name : user1_name}
           />
