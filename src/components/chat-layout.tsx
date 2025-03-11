@@ -24,11 +24,8 @@ export default function ChatLayout({
   initialData: FullUserData | null;
   setInitialdata: React.Dispatch<SetStateAction<FullUserData | null>>;
 }) {
-  if (!initialData) {
-    return <ChatSkeleton></ChatSkeleton>;
-  }
   const { userId } = useAuth();
-  const { contacts } = initialData;
+  const contacts = initialData?.contacts || [];
   const [openedChat, setOpenedChat] = useState<OpenedChat | null>();
   const [hasMessages, setHasMessages] = useState(true);
   const [page, setPage] = useState(1);
@@ -50,6 +47,10 @@ export default function ChatLayout({
 
     return () => window.removeEventListener("resize", checkIfMobile);
   }, []);
+
+  if (!initialData) {
+    return <ChatSkeleton></ChatSkeleton>;
+  }
 
   return (
     // settings modal
