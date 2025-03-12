@@ -31,7 +31,7 @@ export default function LoginForm() {
         localStorage.setItem("token", token);
       }
       if (result.success) {
-        router.push("/protected"); // Redirect to chat
+        router.push("/"); // Redirect to chat
       } else {
         setError(result.error || "Invalid credentials");
       }

@@ -5,7 +5,7 @@ import { X, LogOut, ArrowRight } from "lucide-react";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { useRouter } from "next/navigation";
 import { SetStateAction, useEffect, useRef, useState } from "react";
-import { FullUserData } from "@/app/protected/page";
+import { FullUserData } from "@/app/page";
 import { useAuth } from "@/hooks/useAuth";
 import { Input } from "./ui/input";
 import axios from "axios";

@@ -14,7 +14,7 @@ import {
 import { Mail, Loader2 } from "lucide-react";
 import { addContact } from "@/app/actions/addContacts";
 import { useAuth } from "@/hooks/useAuth";
-import { FullUserData, UserContacts } from "@/app/protected/page";
+import { FullUserData, UserContacts } from "@/app/page";
 
 export default function AddUserForm({
   setInitialdata,
