@@ -14,7 +14,7 @@ export async function middleware(request: NextRequest) {
   if (token) {
     try {
       const response = await fetch(
-        "https://chat-app-server-production-1070.up.railway.app/api/auth/varify",
+        "https://chat-app-server-production-1070.up.railway.app:3123/api/auth/varify",
         {
           method: "POST",
           headers: {

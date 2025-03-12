@@ -63,7 +63,7 @@ export default function SettingModal({
       setLoading(true);
       try {
         const response = await axios.post(
-          "https://chat-app-server-production-1070.up.railway.app/api/user/changeImage",
+          "https://chat-app-server-production-1070.up.railway.app:3123/api/user/changeImage",
           {
             userId,
             imageURL,

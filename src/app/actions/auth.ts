@@ -26,7 +26,7 @@ export async function login(
 
     // login request
     const data = await request(
-      "https://chat-app-server-production-1070.up.railway.app/api/auth/login",
+      "https://chat-app-server-production-1070.up.railway.app:3123/api/auth/login",
       "POST",
       "include",
       undefined,
@@ -81,7 +81,7 @@ export async function register(
       };
     }
     const data = await request(
-      "https://chat-app-server-production-1070.up.railway.app/api/auth/register",
+      "https://chat-app-server-production-1070.up.railway.app:3123/api/auth/register",
       "POST",
       undefined,
       undefined,
