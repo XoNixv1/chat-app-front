@@ -1,7 +1,5 @@
 "use server";
 
-export const dynamic = "force-dynamic";
-
 interface AuthResult {
   success: boolean;
   id?: string;
