@@ -7,7 +7,7 @@ import ChatWindow from "./chat-window";
 import UserProfile from "./user-profile";
 import ContactsList from "./contacts-list";
 import AddUserForm from "./add-user-form";
-import { FullUserData, UserContacts } from "@/app/page";
+import { FullUserData, UserContacts } from "@/app/protected/page";
 import ChatSkeleton from "./ui/chat-skeleton";
 import { useAuth } from "@/hooks/useAuth";
 import SettingModal from "./setting-modal";

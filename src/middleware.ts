@@ -1,53 +1,30 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import jwt from "jsonwebtoken";
+const { verify } = jwt;
+
+const secretKey = process.env.JWT_SECRET_KEY;
 
 export async function middleware(request: NextRequest) {
-  const path = request.nextUrl.pathname;
+  const token = request.cookies.get("chat_token")?.value;
 
-  //public paths
-  const isPublicPath = path === "/login" || path === "/register";
-
-  const token = request.cookies.get("chat_token")?.value || "";
-
-  let isValidToken = false;
-
-  if (token) {
-    try {
-      const response = await fetch(
-        "https://chat-app-server-production-04bc.up.railway.app/api/auth/varify",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      console.log("Validation response status:", response.status);
-
-      if (response.status === 200) {
-        isValidToken = true;
-      }
-    } catch (error) {
-      console.error("Token validation failed", error);
-    }
-  }
-
-  //redirects
-
-  if (isPublicPath && isValidToken) {
-    return NextResponse.redirect(new URL("/", request.url));
-  }
-
-  if (!isPublicPath && !isValidToken) {
+  if (!token) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  return NextResponse.next();
+  try {
+    // @ts-ignore
+    const decoded = verify(token, secretKey);
+
+    const response = NextResponse.next();
+    response.headers.set("user-id", decoded.userId);
+    return response;
+  } catch (error) {
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
 }
 
 // covered routes
 export const config = {
-  matcher: ["/", "/login", "/register"],
+  matcher: ["/api/protected", "/protected", "/"],
 };

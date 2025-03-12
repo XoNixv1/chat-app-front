@@ -27,7 +27,7 @@ export default function LoginForm() {
     try {
       const result = await login(email, password);
       if (result.success) {
-        router.push("/"); // Redirect to chat
+        router.push("/protected"); // Redirect to chat
       } else {
         setError(result.error || "Invalid credentials");
       }

@@ -19,6 +19,8 @@ interface Message {
   sender_id: string;
 }
 
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
 export default function ChatWindow({
   page,
   setPage,
@@ -62,15 +64,12 @@ export default function ChatWindow({
     const prevScrollHeight = chatElement ? chatElement.scrollHeight : 0;
 
     try {
-      const response = await axios.get(
-        "https://chat-app-server-production-04bc.up.railway.app/api/chat/messages",
-        {
-          params: {
-            chat_id: id,
-            page,
-          },
-        }
-      );
+      const response = await axios.get(`${apiUrl}/api/chat/messages`, {
+        params: {
+          chat_id: id,
+          page,
+        },
+      });
       if (response.data.length === 0) {
         setHasMessages(false);
       } else {
@@ -99,12 +98,9 @@ export default function ChatWindow({
     getMessages();
 
     // socket connection
-    const socket = io(
-      "https://chat-app-server-production-04bc.up.railway.app/",
-      {
-        transports: ["websocket", "polling"],
-      }
-    );
+    const socket = io(`${apiUrl}`, {
+      transports: ["websocket", "polling"],
+    });
 
     socket.emit("joinRoom", id);
 

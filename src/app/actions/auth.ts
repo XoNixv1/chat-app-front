@@ -1,20 +1,17 @@
 "use server";
 
-import useHttp from "@/hooks/useHttp";
-import { cookies } from "next/headers";
-
-type AuthResult = {
+interface AuthResult {
   success: boolean;
+  id?: string;
   error?: string;
-  message?: string;
-  id?: number;
-};
+}
+
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export async function login(
   email: string,
   password: string
 ): Promise<AuthResult> {
-  const { request } = useHttp();
   try {
     //TODO validate input
     if (!email || !password) {
@@ -24,17 +21,16 @@ export async function login(
       };
     }
 
-    // login request
-    const data = await request(
-      "https://chat-app-server-production-04bc.up.railway.app/api/auth/login",
-      "POST",
-      "include",
-      undefined,
-      {
-        email,
-        password,
-      }
-    );
+    const response = await fetch(`${apiUrl}/api/auth/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+      credentials: "include",
+    });
+
+    const data = await response.json();
 
     if (data.status === 400) {
       return {
@@ -44,15 +40,15 @@ export async function login(
     }
     console.log(data);
     // seting cookie here cuz it was not working from server
-    (await cookies()).set({
-      name: "chat_token",
-      value: data.token,
-      path: "/",
-      httpOnly: false,
-      secure: true,
-      maxAge: 43200,
-      sameSite: "none",
-    });
+    // (await cookies()).set({
+    //   name: "chat_token",
+    //   value: data.token,
+    //   path: "/",
+    //   httpOnly: false,
+    //   secure: true,
+    //   maxAge: 43200,
+    //   sameSite: "none",
+    // });
     return {
       success: true,
       id: data.id,
@@ -71,7 +67,6 @@ export async function register(
   email: string,
   password: string
 ): Promise<AuthResult> {
-  const { request } = useHttp();
   try {
     //TODO validate input
     if (!userName || !email || !password) {
@@ -81,19 +76,17 @@ export async function register(
       };
     }
 
-    const data = await request(
-      "https://chat-app-server-production-04bc.up.railway.app/api/auth/register",
-      "POST",
-      undefined,
-      undefined,
-      {
-        userName,
-        email,
-        password,
-      }
-    );
+    const response = await fetch(`${apiUrl}/api/auth/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userName, email, password }),
+    });
 
-    if (data.status === 409) {
+    const data = await response.json();
+
+    if (data.status >= 400) {
       return {
         success: false,
         error: data.message,

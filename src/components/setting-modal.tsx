@@ -5,10 +5,12 @@ import { X, LogOut, ArrowRight } from "lucide-react";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { useRouter } from "next/navigation";
 import { SetStateAction, useEffect, useRef, useState } from "react";
-import { FullUserData } from "@/app/page";
+import { FullUserData } from "@/app/protected/page";
 import { useAuth } from "@/hooks/useAuth";
 import { Input } from "./ui/input";
 import axios from "axios";
+
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default function SettingModal({
   setShowSettings,
@@ -62,13 +64,10 @@ export default function SettingModal({
     } else if (userId) {
       setLoading(true);
       try {
-        const response = await axios.post(
-          "https://chat-app-server-production-04bc.up.railway.app/api/user/changeImage",
-          {
-            userId,
-            imageURL,
-          }
-        );
+        const response = await axios.post(`${apiUrl}/api/user/changeImage`, {
+          userId,
+          imageURL,
+        });
         if (response.status === 201) {
           setInitialdata((prev) => {
             if (prev) {

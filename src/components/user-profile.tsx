@@ -7,7 +7,7 @@ import { X, ChevronLeft } from "lucide-react";
 import { AtSign, User } from "lucide-react";
 import { Button } from "./ui/button";
 import { deleteContact } from "@/app/actions/delete-contact";
-import { FullUserData } from "@/app/page";
+import { FullUserData } from "@/app/protected/page";
 import Image from "next/image";
 
 export default function UserProfile({

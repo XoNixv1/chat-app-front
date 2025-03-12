@@ -1,4 +1,4 @@
-import { FullUserData } from "@/app/page";
+import { FullUserData } from "@/app/protected/page";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { OpenedChat } from "./chat-layout";
 
