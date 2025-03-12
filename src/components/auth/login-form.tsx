@@ -10,6 +10,8 @@ import { Input } from "@/components/ui/input";
 import { login } from "@/app/actions/auth";
 import { Mail, Lock, Loader2 } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
 export default function LoginForm() {
   const router = useRouter();
   const [error, setError] = useState<string>("");
