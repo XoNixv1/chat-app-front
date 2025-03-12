@@ -26,7 +26,7 @@ export async function login(
 
     // login request
     const data = await request(
-      "https://chat-app-server-production-1070.up.railway.app:3123/api/auth/login",
+      "https://chat-app-server-production-04bc.up.railway.app/api/auth/login",
       "POST",
       "include",
       undefined,
@@ -80,8 +80,9 @@ export async function register(
         error: "All fields are required",
       };
     }
+
     const data = await request(
-      "https://chat-app-server-production-1070.up.railway.app:3123/api/auth/register",
+      "https://chat-app-server-production-04bc.up.railway.app/api/auth/register",
       "POST",
       undefined,
       undefined,

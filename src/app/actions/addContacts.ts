@@ -10,7 +10,7 @@ export async function addContact(user1_id: string | null, email: string) {
       };
     }
     const response = await axios.post(
-      "https://chat-app-server-production-1070.up.railway.app:3123/api/user/addUser",
+      "https://chat-app-server-production-04bc.up.railway.app/api/user/addUser",
       {
         user1_id: user1_id,
         email: email,
