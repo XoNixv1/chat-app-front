@@ -10,8 +10,6 @@ import { Input } from "@/components/ui/input";
 import { login } from "@/app/actions/auth";
 import { Mail, Lock, Loader2 } from "lucide-react";
 
-export const dynamic = "force-dynamic";
-
 export default function LoginForm() {
   const router = useRouter();
   const [error, setError] = useState<string>("");
@@ -28,8 +26,12 @@ export default function LoginForm() {
 
     try {
       const result = await login(email, password);
+      const { token } = result;
+      if (token) {
+        localStorage.setItem("token", token);
+      }
       if (result.success) {
-        // router.push("/protected"); // Redirect to chat
+        router.push("/protected"); // Redirect to chat
       } else {
         setError(result.error || "Invalid credentials");
       }

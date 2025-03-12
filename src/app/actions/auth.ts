@@ -3,6 +3,7 @@
 interface AuthResult {
   success: boolean;
   id?: string;
+  token?: string;
   error?: string;
 }
 
@@ -27,10 +28,10 @@ export async function login(
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ email, password }),
-      credentials: "include",
     });
 
     const data = await response.json();
+    console.log(data);
 
     if (data.status === 400) {
       return {
@@ -38,8 +39,7 @@ export async function login(
         error: data.message,
       };
     }
-    console.log(data);
-    // seting cookie here cuz it was not working from server
+
     // (await cookies()).set({
     //   name: "chat_token",
     //   value: data.token,
@@ -51,6 +51,7 @@ export async function login(
     // });
     return {
       success: true,
+      token: data.token,
       id: data.id,
     };
   } catch (error) {

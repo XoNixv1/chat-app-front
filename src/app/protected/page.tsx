@@ -1,13 +1,8 @@
 "use client";
 import ChatLayout from "@/components/chat-layout";
 import { useAuth } from "@/hooks/useAuth";
-import useHttp from "@/hooks/useHttp";
 import { useEffect, useState } from "react";
-
-interface ApiResponse {
-  userId?: string;
-  message: string;
-}
+import { useRouter } from "next/navigation";
 
 export interface User {
   email: string;
@@ -36,59 +31,93 @@ export interface FullUserData {
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default function Home() {
-  const { userId, setUserId } = useAuth();
-  const { request } = useHttp();
+  const { setUserId } = useAuth();
   const [initialData, setInitialdata] = useState<FullUserData | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
-    const fetchData = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      router.push("/login");
+      return;
+    }
+
+    async function checkAndFetchData() {
       try {
-        const response = await fetch("/api/protected", {
-          method: "GET",
-          credentials: "include",
+        const result = await fetch(`${apiUrl}/api/auth/varify`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token }),
         });
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
+        if (result.status !== 200) {
+          router.push("/login");
         }
+        const data = await result.json();
 
-        const result: ApiResponse = await response.json();
-        if (result.userId) {
-          setUserId(result.userId);
-        } else {
-          throw new Error("User ID not found in response");
-        }
-      } catch (err) {
-        console.log(
-          err instanceof Error ? err.message : "Something went wrong"
-        );
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  //getting user data
-  useEffect(() => {
-    if (!userId) return;
-
-    async function fetchUserData() {
-      try {
-        const res = await request(`${apiUrl}/api/user/userData/${userId}`);
-        if (!res.ok) {
-          throw new Error(`Failed to fetch user data: ${res.statusText}`);
-        }
-
-        setInitialdata({
-          currentUser: res.userData,
-          contacts: res.userContacts,
-        });
+        setUserId(data.userId);
+        const { currentUser, contacts } = data as FullUserData;
+        const fullData: FullUserData = {
+          currentUser: currentUser,
+          contacts: contacts,
+        };
+        setInitialdata(fullData);
       } catch (error) {
-        console.error("Failed to fetch user data, error:", error);
+        router.push("/login");
+        throw error;
       }
     }
-    fetchUserData();
-  }, [userId]);
+    checkAndFetchData();
+  }, [router]);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch("/api/protected", {
+  //         method: "GET",
+  //         credentials: "include",
+  //       });
+
+  //       if (!response.ok) {
+  //         throw new Error(`HTTP error! Status: ${response.status}`);
+  //       }
+
+  //       const result: ApiResponse = await response.json();
+  //       if (result.userId) {
+  //         setUserId(result.userId);
+  //       } else {
+  //         throw new Error("User ID not found in response");
+  //       }
+  //     } catch (err) {
+  //       console.log(
+  //         err instanceof Error ? err.message : "Something went wrong"
+  //       );
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, []);
+
+  //getting user data
+  // useEffect(() => {
+  //   if (!userId) return;
+
+  //   async function fetchUserData() {
+  //     try {
+  //       const res = await request(`${apiUrl}/api/user/userData/${userId}`);
+  //       if (!res.ok) {
+  //         throw new Error(`Failed to fetch user data: ${res.statusText}`);
+  //       }
+
+  //       setInitialdata({
+  //         currentUser: res.userData,
+  //         contacts: res.userContacts,
+  //       });
+  //     } catch (error) {
+  //       console.error("Failed to fetch user data, error:", error);
+  //     }
+  //   }
+  //   fetchUserData();
+  // }, [userId]);
 
   return (
     <div>

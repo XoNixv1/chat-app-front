@@ -92,7 +92,9 @@ export default function SettingModal({
   }
 
   const handleSignOut = () => {
-    if (userId) document.cookie = `chat_token=; Max-Age=0; path=/; secure;`;
+    if (userId) {
+      localStorage.removeItem("token");
+    }
     router.push("/login");
   };
 
