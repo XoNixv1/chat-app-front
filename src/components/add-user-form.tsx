@@ -60,7 +60,7 @@ export default function AddUserForm({
         if (result) setError(result.error || "Failed to add user");
         setTimeout(() => {
           setError("");
-        }, 2500);
+        }, 5000);
       }
     } catch (err) {
       setError(`An error occurred. Please try again.${err}`);

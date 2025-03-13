@@ -283,7 +283,7 @@ export default function ChatWindow({
               </Avatar>
 
               <div
-                className={`max-w-md p-3 rounded-lg ${
+                className={`max-w-md p-3 rounded-lg whitespace-pre-wrap break-all ${
                   userId === msg.sender_id
                     ? "bg-teal-600 text-white ml-2 text-right"
                     : "bg-zinc-700 text-zinc-100"

@@ -15,11 +15,17 @@ export async function addContact(user1_id: string | null, email: string) {
       user1_id: user1_id,
       email: email,
     });
+
     return {
       data: response.data.newChat,
       success: true,
     };
-  } catch (error) {
+  } catch (error: any) {
+    if (error.status === 404) {
+      return {
+        error: "User does not exist",
+      };
+    }
     return {
       success: false,
       error: "An error occurred. Please try again later.",
