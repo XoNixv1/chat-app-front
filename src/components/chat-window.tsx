@@ -19,6 +19,10 @@ interface Message {
   sender_id: string;
 }
 
+interface EmojiData {
+  native: string;
+}
+
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default function ChatWindow({
@@ -54,7 +58,7 @@ export default function ChatWindow({
   const [loading, setLoading] = useState(false);
   const [isPickerVisable, setIsPickerVisable] = useState(false);
   const pickerRef = useRef<HTMLDivElement | null>(null);
-  const textAreaRef = useRef<any>(null);
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   async function getMessages() {
     if (loading || !hasMessages) return;
@@ -159,14 +163,13 @@ export default function ChatWindow({
   }, [message]);
 
   //sending to user or gpt
-  const socketSendType = (sendType: string) => {
+  const socketSendType = (sendType: "sendMessage" | "sendGptMessage") => {
     if (socket) {
       socket.emit(sendType, {
         id,
         messageText: message,
         senderId: userId,
       });
-      // setMessages((prev) => [...prev]);
       setMessage("");
       setTimeout(() => {
         scrollToBottom();
@@ -215,8 +218,8 @@ export default function ChatWindow({
     }
   };
 
-  const addEmoji = (emogi: any) => {
-    setMessage((prev) => prev + emogi.native);
+  const addEmoji = (emoji: EmojiData) => {
+    setMessage((prev) => prev + emoji.native);
   };
 
   //shift enter in text-area

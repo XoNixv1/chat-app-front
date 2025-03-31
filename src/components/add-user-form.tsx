@@ -41,7 +41,7 @@ export default function AddUserForm({
         setEmail("");
 
         const newUser = result.data as unknown as UserContacts;
-        console.log(newUser);
+
         setInitialdata((prev) => {
           if (!prev) return null;
 

@@ -44,7 +44,7 @@ export default function Home() {
 
     async function checkAndFetchData() {
       try {
-        const result = await fetch(`${apiUrl}/api/auth/varify`, {
+        const result = await fetch(`${apiUrl}/api/auth/verify`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ token }),

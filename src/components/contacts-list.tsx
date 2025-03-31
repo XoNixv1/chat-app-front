@@ -20,8 +20,9 @@ export default function ContactsList({
   isMobile: boolean;
 }) {
   if (!curUserId) {
-    return;
+    return null;
   }
+
   return (
     <div className="p-2">
       {contacts.map((contact) => {

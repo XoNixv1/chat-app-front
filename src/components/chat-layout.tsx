@@ -2,7 +2,7 @@
 
 import { SetStateAction, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, Search, Settings, User } from "lucide-react";
+import { ChevronLeft, Settings, User } from "lucide-react";
 import ChatWindow from "./chat-window";
 import UserProfile from "./user-profile";
 import ContactsList from "./contacts-list";
@@ -78,14 +78,6 @@ export default function ChatLayout({
             <Settings className="h-5 w-5" />
           </Button>
         </div>
-
-        {/* <div className="relative">
-          <Search className="absolute left-2 top-2.5 h-4 w-4 text-zinc-400" />
-          <Input
-            placeholder="search message"
-            className="pl-8 bg-zinc-700 border-zinc-600 text-zinc-200 max-w-64 focus-visible:ring-teal-500"
-          />
-        </div> */}
       </header>
 
       <div className="flex flex-1 overflow-hidden">

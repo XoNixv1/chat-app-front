@@ -35,6 +35,10 @@ export default function UserProfile({
   } = openedChat.contactData;
   const [isOpen, setIsOpen] = useState(true);
 
+  if (!curUserId) {
+    return null;
+  }
+
   if (isMobile) {
     return (
       <Button
@@ -46,22 +50,18 @@ export default function UserProfile({
           setInitialdata((prev) => {
             if (prev === null) {
               return prev;
-            } else {
-              const newContacts = prev.contacts.filter(
-                (contact) => contact.id !== id
-              );
-              return { ...prev, contacts: newContacts };
             }
+
+            const newContacts = prev.contacts.filter(
+              (contact) => contact.id !== id
+            );
+            return { ...prev, contacts: newContacts };
           });
         }}
       >
         Unfriend
       </Button>
     );
-  }
-
-  if (!curUserId) {
-    return;
   }
 
   if (!isOpen) {
@@ -74,6 +74,14 @@ export default function UserProfile({
       </button>
     );
   }
+
+  const isGptContact =
+    user2_email === "@chatgpt.com" || user1_email === "@chatgpt.com";
+  const displayName = curUserId === user1_id ? user2_name : user1_name;
+  const displayEmail = curUserId === user1_id ? user2_email : user1_email;
+  const displayPhoto =
+    curUserId === user1_id ? user2_photo_url : user1_photo_url;
+
   return (
     <div className="w-100 border-l border-zinc-700 overflow-y-auto bg-zinc-900">
       <div className="p-4">
@@ -87,8 +95,8 @@ export default function UserProfile({
         </div>
         <div className="aspect-video rounded-md mb-4 flex items-center justify-center max-w-8/12 m-auto">
           <Image
-            src={curUserId === user1_id ? user2_photo_url : user1_photo_url}
-            alt={curUserId === user1_id ? user2_name : user1_name}
+            src={displayPhoto}
+            alt={displayName}
             width={500}
             height={500}
           />
@@ -100,9 +108,7 @@ export default function UserProfile({
               <AvatarImage alt="User" />
               <User className="m-auto" />
             </Avatar>
-            <span className="text-teal-500">
-              {curUserId === user1_id ? user2_name : user1_name}
-            </span>
+            <span className="text-teal-500">{displayName}</span>
           </div>
 
           <div className="flex items-center mb-3">
@@ -110,26 +116,24 @@ export default function UserProfile({
               <AvatarImage alt="Email" />
               <AtSign className="m-auto" />
             </Avatar>
-            <span className="text-teal-500">
-              {curUserId === user1_id ? user2_email : user1_email}
-            </span>
+            <span className="text-teal-500">{displayEmail}</span>
           </div>
-          {user2_email !== "@chatgpt.com" && user1_email !== "@chatgpt.com" && (
+          {!isGptContact && (
             <Button
               variant="destructive"
-              className="w-[50%] bg-red-600 hover:bg-red-700 text-white self-center "
+              className="w-[50%] bg-red-600 hover:bg-red-700 text-white self-center"
               onClick={() => {
                 deleteContact(id);
                 setOpenedChat(null);
                 setInitialdata((prev) => {
                   if (prev === null) {
                     return prev;
-                  } else {
-                    const newContacts = prev.contacts.filter(
-                      (contact) => contact.id !== id
-                    );
-                    return { ...prev, contacts: newContacts };
                   }
+
+                  const newContacts = prev.contacts.filter(
+                    (contact) => contact.id !== id
+                  );
+                  return { ...prev, contacts: newContacts };
                 });
               }}
             >
